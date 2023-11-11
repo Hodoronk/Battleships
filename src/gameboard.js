@@ -1,13 +1,12 @@
 const {Ship} = require('./ship')
 
 class Gameboard{
-    constructor(placement, occupied = [], placedShips = [], missed = []){
-        this.placement = placement
+    constructor( occupied = [], placedShips = [], missed = []){
         this.occupied = occupied
         this.placedShips = placedShips
         this.missed = missed
     }
-    // This will be used on a button
+
     xPlace(shipLength, cX, cY){
         if(!this.occupied.some(coord => coord[0] === cX && coord[1] === cY)) {
 
@@ -53,11 +52,10 @@ class Gameboard{
                 if(this.allSank()) {
                     return 'ALL SHIPS SANK'
 
-                } else if(!this.allSank()) {
+                } else {
                     if(this.placedShips[i].isSunk()) {
                         return 'Ship sank'
                     }else {
-
                         return this.placedShips[i].hits
                     }
                 }
