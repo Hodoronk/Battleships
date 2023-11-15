@@ -27,6 +27,8 @@ body{
 }
 
 
+
+
 #name-container{
     width: 15em;
     height: 20%;
@@ -92,6 +94,9 @@ body{
     width: 100%;
 
 }
+
+
+
 #main-board{
     border: 1px solid black;
     width: 15em;
@@ -101,30 +106,66 @@ body{
     grid-template-columns: repeat(10, 1fr);
     gap: 2px;
 }
+#main-board.invisible{
+    opacity: 0;
+}
+
+
+
+
 .square{
+
     height: 100%;
     width: 100%;
     border: 1px solid rgba(0, 0, 0, 0.493);
     background-color: rgba(0, 255, 255, 0.322);
+    display: flex;
+    flex-direction: row;
+    position: relative;
 }
 
 .square:hover{
     background-color:rgba(0, 255, 255, 0.575); ;
 }
-
+.hover{
+    background-color:rgba(0, 255, 255, 0.575); ;
+}
 #ship-panel{
     height: 15em;
     width: auto;
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
-    align-items: baseline;
+    justify-content: center;
+    align-items: center;
     margin: 0;
     border-radius: 10%;
     background-color: rgba(255, 255, 255, 0.062);
     padding: 1em;
     margin-top: 1em;
+
 }
+#ship-area{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+#rotate-btn{
+    margin-top: 2em;
+    height: 5em;
+    width: 10em;
+    border-radius: 5%;
+    border: 1 px solid white;
+    background-color: black;
+    color: white;
+    font-weight: bolder;
+}
+
+
+
+
 #carrier, #battleship, #destroyer, #submarine, #patrol-boat{
 
     height: 22px;
@@ -133,13 +174,18 @@ body{
     border: 1px solid black;
     cursor: pointer;
     border-radius: 5px;
+   
 }
+
 #carrier:hover, #battleship:hover, #destroyer:hover, #submarine:hover, #patrol-boat:hover{
-    background-color: rgb(122, 116, 116);
+    background-color: rgb(43, 41, 41);
 }
+
+
 
 #carrier{
     width: 110px;
+
 }
 
 #battleship{
@@ -153,6 +199,19 @@ body{
 }
 #patrol-boat{
     width: 22px;
+}
+
+/* Classes for dragging and dropping ships onto board */
+.invisible{
+    opacity: 0;
+}
+.visible{
+    opacity: 1
+}
+.dragged{
+    position: absolute;
+   z-index: 2;
+
 }
 
 
@@ -237,11 +296,15 @@ body{
 }
   }
 
-
   @media only screen and (min-width: 1570px){
     #title{
         font-size: 7em;
     }
+    #title.enlarge{
+        font-size: 10em;
+    }
+
+
     #ship-panel{
         margin-left: 10em;
         padding: 2em;
@@ -255,25 +318,61 @@ body{
         height: 40em;;
     }
     #carrier{
-        width: 310px;
+        width: 318px;
+        height: 62px;
+        transition: width 0.5s ease, height 0.5s ease, transform 0.5s linear;
+    }
+    #carrier.vertical-carrier{
+        height: 318px;
+        width: 62px;
+        transform: rotate(180deg)
+    }
+
+    #battleship{
+        width: 255px;
         height: 62px;
     }
-    #battleship{
-        width: 248px;
-        height: 62px;
+    #battleship.vertical-battleship{
+        width: 62px;
+        height: 255px;
     }
     #destroyer{
-        width: 186px;
+        width: 191px;
         height: 62px;
     }
+    #destroyer.vertical-destroyer{
+        width: 62px;
+        height: 191px;
+    }
+
     #submarine{
-        width: 186px;
+        width: 191px;
         height: 62px;
+    }
+    #submarine.vertical-submarine{
+        width: 62px;
+        height: 191px;
     }
     #patrol-boat{
         width: 62px;
         height: 62px;
     }
+    #vs-text {
+        font-size: 3em;
+        color: white;
+        opacity: 0; 
+        transition: opacity 3s ease; 
+    }
+    
+    #vs-text.fade-in {
+        opacity: 1; 
+    }
+    #vs-text.fade-out{
+        opacity:0;
+    }
+
+    
 
     }
   
+
