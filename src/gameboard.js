@@ -19,11 +19,19 @@ class Gameboard{
             newShip.coords.forEach(coord => {
                 this.occupied.push(coord)
             })
+            console.log(newShip.coords)
             return newShip.coords
         } else {
+            
             return 'Invalid placement'
         }
     }
+    yToggle(coords) {
+
+    }
+
+
+
 
     allSank(){
         let num = this.placedShips.length
