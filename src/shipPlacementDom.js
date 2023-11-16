@@ -1,17 +1,18 @@
 import { body } from "./nameInputDom";
+import { Gameboard } from "./gameboard";
 
+const playerGameboard = new Gameboard()
 let unavailable = []
 
 
 let rotation = 0; // 0 = horizontal 1 = vertical
 // Board DOM elements
-const container = document.createElement('div')
-const mainBoard = document.createElement('div')
-const shipPanel = document.createElement('div')
+export const shipPanel = document.createElement('div')
+export const container = document.createElement('div')
+export const mainBoard = document.createElement('div')
 const rotateBtn = document.createElement('button')
 const shipArea = document.createElement('div')
 rotateBtn.textContent = 'Rotate ship'
-
 const instruction = document.createElement('h2')
 
 // The ships
@@ -22,18 +23,21 @@ export const submarine = document.createElement('div')
 export const patrolBoat = document.createElement('div')
 const shipsArray = [battleship, destroyer, submarine, patrolBoat]
 
-
-
 // Make ships draggable
-
 carrier.setAttribute('draggable', 'true');
 battleship.setAttribute('draggable', 'true');
 destroyer.setAttribute('draggable', 'true');
 submarine.setAttribute('draggable', 'true');
 patrolBoat.setAttribute('draggable', 'true');
 
+//Play button
+export const playBtn = document.createElement('button')
+playBtn.textContent = 'Play'
+
+
 
 export const initBoard = () => {
+    let selected;
     body.appendChild(container)
     container.appendChild(mainBoard)
     container.appendChild(shipPanel)
@@ -41,26 +45,22 @@ export const initBoard = () => {
     shipPanel.appendChild(rotateBtn)
     shipPanel.appendChild(shipArea)
     
-
-
     instruction.textContent = 'Drag & Drop your carrier'
     mainBoard.setAttribute('id', 'main-board')
     shipPanel.setAttribute('id', 'ship-panel')
     container.setAttribute('id', 'board-container')
     shipArea.setAttribute('id', 'ship-area')
     rotateBtn.setAttribute('id', 'rotate-btn')
-    shipArea.appendChild(carrier)
     carrier.setAttribute('class', ' visible')
+    shipArea.appendChild(carrier)
     
-
-
     carrier.setAttribute('id', 'carrier')
     battleship.setAttribute('id', 'battleship')
     destroyer.setAttribute('id', 'destroyer')
     submarine.setAttribute('id', 'submarine')
     patrolBoat.setAttribute('id', 'patrol-boat')
     
-    let selected;
+
     carrier.addEventListener('dragstart', dragStart)
     destroyer.addEventListener('dragstart', dragStart)
     battleship.addEventListener('dragstart', dragStart)
@@ -76,9 +76,6 @@ export const initBoard = () => {
     function dragStart () {
         setTimeout(() => (this.className = 'invisible', 0))
         selected = event.target
-    
-        
-
     }
     function dragEnd () {
         this.classList.add('visible')       
@@ -100,6 +97,7 @@ export const initBoard = () => {
         square.addEventListener('dragenter', dragEnter)
         square.addEventListener('dragleave', dragLeave)
         square.addEventListener('drop', () => {
+
             const shipLength = getShipLength(shipNumber)
             const coords = getCoords(rotation, dataInfo, shipLength)
             if(shipLength + dataInfo[1]  > 10 && rotation === 0) {     
@@ -112,6 +110,13 @@ export const initBoard = () => {
             if (coords.some(coord => unavailable.some(unavailCoord => JSON.stringify(unavailCoord) === JSON.stringify(coord)))){
                 square.classList.remove('hover')                                    // prevent ship placement overlap
                 return
+            }
+            if(rotation === 0) {
+                playerGameboard.xPlace(shipLength, row, col)
+                console.log(playerGameboard.occupied)
+            }else{
+                playerGameboard.yPlace(shipLength, row, col)
+                console.log(playerGameboard.occupied)
             }
 
             coords.forEach((element) => {                                            // pushing coords into array that collects taken coords on board
@@ -126,13 +131,17 @@ export const initBoard = () => {
                 selected.classList.add(`vertical-${selected.id}`)
             }
 
-            shipArea.appendChild(shipsArray[shipNumber])
-            instruction.textContent = `Drag and drop your ${shipsArray[shipNumber].id} `
-            shipNumber++;
-            rotation = 0;
+            if(shipNumber < 4) {
 
+                shipArea.appendChild(shipsArray[shipNumber])
+                instruction.textContent = `Drag and drop your ${shipsArray[shipNumber].id} `
+                shipNumber++;
+                rotation = 0;
+
+            } else {
+                remover()
+            }
         })
-
     }
     
     rotateBtn.addEventListener('click', () => {
@@ -151,30 +160,6 @@ export const initBoard = () => {
 }
 
 
-
-
-
-
-// DOM elements for name input
-
-
-
-
-
-// // DOM Elements for play button
-// const battleButton = document.createElement('button')
-// battleButton.textContent = 'Battle!'
-// const observer = new MutationObserver((mutations) => {
-
-//     if (shipPanel.childElementCount === 1) {
-//         shipPanel.removeChild(instruction)
-
-//         shipPanel.appendChild(battleButton)
-
-//     }
-// })
-// const config = { childList: true };
-// observer.observe(shipPanel, config)
 
 
 
@@ -216,5 +201,10 @@ const getCoords = (rotation, dataInfo, shipLength) => {
     }
 }
 
-
+const remover = () => {
+    shipPanel.removeChild(shipArea)
+    shipPanel.removeChild(rotateBtn)
+    shipPanel.removeChild(instruction)
+    shipPanel.appendChild(playBtn)
+}
 
