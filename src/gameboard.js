@@ -1,6 +1,6 @@
 const {Ship} = require('./ship')
 
-class Gameboard{
+export class Gameboard{
     constructor( occupied = [], placedShips = [], missed = []){
         this.occupied = occupied
         this.placedShips = placedShips
@@ -19,15 +19,27 @@ class Gameboard{
             newShip.coords.forEach(coord => {
                 this.occupied.push(coord)
             })
-            console.log(newShip.coords)
             return newShip.coords
         } else {
             
             return 'Invalid placement'
         }
     }
-    yToggle(coords) {
-
+    yPlace(shipLength, cX, cY) {
+        if(!this.occupied.some(coord => coord[0] === cX && coord[1] === cY)) {
+            const newShip = new Ship(shipLength)
+            newShip.coords.push([cX, cY])
+            for(let i = 1; i < shipLength; i++) {
+                newShip.coords.push([cX, cY + i])
+            }
+            this.placedShips.push(newShip)
+            newShip.coords.forEach(coord => {
+                this.occupied.push(coord)
+            })
+            return newShip.coords
+        } else {
+            return 'Invalid placements'
+        }
     }
 
 
@@ -76,7 +88,3 @@ class Gameboard{
     }
 }
 
-
-module.exports = {
-    Gameboard
-}
