@@ -1,9 +1,10 @@
-import { shipPanel, container, mainBoard} from "./shipPlacementDom"
-import { playerTurn } from "./playGame"
+import { shipPanel, container, mainBoard, playerGameboard} from "./shipPlacementDom"
 import { body } from "./nameInputDom"
 import { usr } from "."
+import { playerSquares } from "./shipPlacementDom"
 
 
+export const squareArr = []
 const pcBoard = document.createElement('div')
 const playerName = document.createElement('h2')
 const pcName = document.createElement('h2')
@@ -19,17 +20,13 @@ for(let i = 0; i < boardSize* boardSize; i++) {
     const col = Math.floor(i / boardSize)
     const row = i % boardSize
     const square = document.createElement('div')
+
     square.classList.add('square')
     square.setAttribute('data-info', [col, row]);
-    const dataInfo = [col, row]
     pcBoard.appendChild(square)
-    square.addEventListener('click', () => {
-        if(playerTurn(dataInfo) === 'Ship hit'){
-            square.classList.add('hit')
-        }else{
-            square.classList.add('miss')
-        }
-    })
+    squareArr.push(square)
+
+
 }
 
 
@@ -70,5 +67,29 @@ export const populateBoards = () => {
         body.appendChild(pcName)
         body.appendChild(playerName)
     },3000)
+}
+
+
+export const replaceShipDivWithColor = () => {
+
+    playerSquares.forEach((square) => {
+        if(square.hasChildNodes()) {
+            let firstChild = square.firstChild
+            square.removeChild(firstChild)
+        }
+        const data = square.getAttribute('data-info')
+        const dataInfo = data.split(',').map(Number)
+
+        if (playerGameboard.occupied.some((occupiedData) => {
+            return occupiedData[0] === dataInfo[0] && occupiedData[1] === dataInfo[1];
+        })) {
+
+            square.classList.add('ship')
+            console.log('DataInfo found in playerGameboard.occupied');
+        }
+
+
+
+    })
 }
 
