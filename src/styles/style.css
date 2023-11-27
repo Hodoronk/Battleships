@@ -1,5 +1,18 @@
+@font-face {
+    font-family: battleFont;
+    src: url(./fonts/Gimme\ Danger.ttf);
+}
+@font-face{
+    font-family: battle2;
+    src: url('./fonts/Stencilia-A.ttf')
+}
+
+
+
+
 *{
-    margin: 0
+    margin:0;
+    font-family: battle2;
 
 }
 
@@ -16,6 +29,11 @@ body{
 
 /* STYLES FOR NAME INPUT */
 #title{
+    background: #000000;
+    background: linear-gradient(to top, #000000 0%, #107317 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-family: battleFont;
     position: absolute;
     top: 1em;
     font-size: 3em;
@@ -25,10 +43,6 @@ body{
 #title.shrink{
     font-size: 2.5em;
 }
-
-
-
-
 #name-container{
     width: 15em;
     height: 20%;
@@ -46,9 +60,10 @@ body{
 
 
 #name-prompt{
-    font-size: 2em;
+    font-size: 1.5em;
     margin-bottom: 0.5em;
-    color: white;
+    color: rgb(238, 238, 238);
+    font-family:battle2;
 }
 #name-input{
     border: none;
@@ -64,6 +79,7 @@ body{
     padding-left: 0.5em;
     color: rgb(15, 83, 122);
     font-weight: bolder;
+    font-family: battle2;
 }
 
 #name-submit{
@@ -72,12 +88,12 @@ body{
     background: none;
     padding: 0;
     margin: 0;
-
+    font-family:battleFont;
     padding: 0.5em;
     width: 15em;
     border-radius: 5px;
-    background-color: rgb(31, 108, 197);
-    color: white;
+    background-color: rgb(1, 39, 9);
+    color: rgb(226, 226, 226);
     font-size: 1em;
     cursor: pointer;
 }
@@ -92,7 +108,6 @@ body{
     align-items: center;
     height: 100%;
     width: 100%;
-
 }
 
 
@@ -113,7 +128,7 @@ body{
 
 
 
-.square{
+.square, .square-pc{
 
     height: 100%;
     width: 100%;
@@ -123,9 +138,17 @@ body{
     flex-direction: row;
     position: relative;
 }
-
+.square.ship{
+    background-color: rgb(43, 42, 42);
+}
 .square:hover{
     background-color:rgba(0, 255, 255, 0.575); ;
+}
+.square.hit{
+    background-color: red;
+}
+.square.miss{
+    background-color: gray;
 }
 .hover{
     background-color:rgba(0, 255, 255, 0.575); ;
@@ -153,14 +176,10 @@ body{
     align-items: center;
 }
 #rotate-btn{
-    margin-top: 2em;
-    height: 5em;
-    width: 10em;
-    border-radius: 5%;
-    border: 1 px solid white;
-    background-color: black;
-    color: white;
-    font-weight: bolder;
+    background-color: rgba(0, 255, 255, 0);
+    margin-top: 20px;
+    border: 0;
+    cursor: pointer;
 }
 
 
@@ -320,12 +339,12 @@ body{
     #carrier{
         width: 318px;
         height: 62px;
-        transition: width 0.5s ease, height 0.5s ease, transform 0.5s linear;
+
     }
     #carrier.vertical-carrier{
         height: 318px;
         width: 62px;
-        transform: rotate(180deg)
+
     }
 
     #battleship{
@@ -370,7 +389,27 @@ body{
     #vs-text.fade-out{
         opacity:0;
     }
-
+    #board-container.playMode{
+        display: flex;
+        flex-direction:row;
+        justify-content: space-around;
+    }
+    #player-name{
+        position: absolute;
+        top: 6em;
+        left: 15%;
+        font-size: 2em;
+        color: rgb(49, 197, 29);
+        font-weight: bolder;
+    }
+    #pc-name{
+        position: absolute;
+        top: 6em;
+        right: 17%;
+        font-size: 2em;
+        color: rgb(255, 0, 0);
+        font-weight: bolder;
+    }
     
 
     }
